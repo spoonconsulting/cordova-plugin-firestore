@@ -1,0 +1,47 @@
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="@spoonconsulting/cordova-plugin-firestore"
+    version="1.0.0">
+
+    <name>Firestore</name>
+    <description>Cordova plugin for Firebase Firestore</description>
+    <license>MIT</license>
+    <keywords>cordova</keywords>
+    <repo>https://github.com/spoonconsulting/cordova-plugin-firestore</repo>
+    <issue>https://github.com/spoonconsulting/cordova-plugin-firestore/issues</issue>
+
+    <js-module src="www/firestore.js" name="Firestore">
+        <clobbers target="Firestore" />
+    </js-module>
+
+    <engines>
+        <engine name="cordova" version=">=10.0.0" />
+        <engine name="cordova-android" version=">=11.0.0" />
+        <engine name="cordova-ios" version=">=6.0.0" />
+    </engines>
+    <platform name="android">
+        <preference name="ANDROID_FIREBASE_BOM_VERSION" default="32.5.0" />
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Firestore">
+                <param name="android-package"
+                    value="com.spoon.cordova.firestore.Firestore" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <config-file target="config.xml" parent="/*">
+            <preference name="AndroidXEnabled" value="true" />
+            <preference name="GradlePluginGoogleServicesEnabled" value="true" />
+            <preference name="GradlePluginGoogleServicesVersion" value="4.4.0" />
+        </config-file>
+
+        <framework src="platform('com.google.firebase:firebase-bom:$ANDROID_FIREBASE_BOM_VERSION')" />
+        <framework src="com.google.firebase:firebase-firestore" />
+        <framework src="com.fasterxml.jackson.core:jackson-databind:+" />
+
+
+        <source-file src="src/android/Firestore.java"
+            target-dir="src/com/spoon/cordova/firestore/" />
+    </platform>
+</plugin>

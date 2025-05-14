@@ -1,0 +1,36 @@
+{
+  "name": "@spoonconsulting/cordova-plugin-firestore",
+  "version": "1.0.0",
+  "description": "Cordova plugin for Firebase Firestore",
+  "types": "./types/index.d.ts",
+  "cordova": {
+    "id": "@spoonconsulting/cordova-plugin-firestore",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spoonconsulting/cordova-plugin-firestore.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Mouhammad Hashir Rajah",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/spoonconsulting/cordova-plugin-firestore/issues"
+  },
+  "homepage": "https://github.com/spoonconsulting/cordova-plugin-firestore#readme",
+  "keywords": [
+    "cordova",
+    "firebase",
+    "firestore",
+    "realtime",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "scripts": {}
+}
