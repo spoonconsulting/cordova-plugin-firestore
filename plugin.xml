@@ -38,10 +38,13 @@
 
         <framework src="platform('com.google.firebase:firebase-bom:$ANDROID_FIREBASE_BOM_VERSION')" />
         <framework src="com.google.firebase:firebase-firestore" />
+        <framework src="com.google.firebase:firebase-auth" />
         <framework src="com.fasterxml.jackson.core:jackson-databind:+" />
 
 
         <source-file src="src/android/Firestore.java"
-            target-dir="src/com/spoon/cordova/firestore/" />
+            target-dir="src/com/spoon/cordova/firestore" />
+        <source-file src="src/android/Auth.java"
+            target-dir="src/com/spoon/cordova/firestore" />
     </platform>
 </plugin>

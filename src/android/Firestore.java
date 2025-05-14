@@ -28,6 +28,7 @@ import java.util.Objects;
 public class Firestore extends CordovaPlugin {
     private static final String TAG = "FIRESTORE_PLUGIN";
     private FirebaseFirestore db;
+    private Auth auth;
     private final Map<String, CallbackContext> realtimeCallbacks = new HashMap<>();
     private final Map<String, ListenerRegistration> listenerRegistrations = new HashMap<>();
 
@@ -42,6 +43,10 @@ public class Firestore extends CordovaPlugin {
                     break;
                 case "listenToDocument":
                     listenToDocument(args.getString(0), args.getString(1), args.getJSONArray(2), callbackContext);
+                    break;
+                case "signInWithCustomToken":
+                    initAuth();
+                    this.auth.signInWithCustomToken(args.getString(0), callbackContext);
                     break;
                 default:
                     callbackContext.error("execute <-> Invalid action: " + action);
@@ -71,8 +76,8 @@ public class Firestore extends CordovaPlugin {
                 if (document.exists()) {
                     JSONObject data = new JSONObject();
                     try {
-                        data.put("data", document.getData());
-                    } catch (JSONException e) {
+                        data.put("data", mapToJSONObject(document.getData()));
+                    } catch (Exception e) {
                         handleExceptionWithContext("getDocumentData", e, context);
                         return;
                     }
@@ -152,8 +157,8 @@ public class Firestore extends CordovaPlugin {
 
             if (snapshot != null && snapshot.exists()) {
                 try {
-                    resultData.put("data", snapshot.getData());
-                } catch (JSONException ignored) {}
+                    resultData.put("data", mapToJSONObject(snapshot.getData()));
+                } catch (Exception ignored) {}
                 PluginResult result = new PluginResult(PluginResult.Status.OK, resultData);
                 result.setKeepCallback(true);
                 Objects.requireNonNull(realtimeCallbacks.get(docPath)).sendPluginResult(result);
@@ -183,6 +188,12 @@ public class Firestore extends CordovaPlugin {
         this.db = FirebaseFirestore.getInstance();
     }
 
+    private void initAuth() {
+        if (this.auth != null) return;
+
+        this.auth = new Auth();
+    }
+
     /*
      * Helper methods
      */
@@ -197,6 +208,12 @@ public class Firestore extends CordovaPlugin {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = jsonObject.toString();
         return objectMapper.readValue(jsonString, typeRef);
+    }
+
+    private JSONObject mapToJSONObject(Map<String, Object> map) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = objectMapper.writeValueAsString(map);
+        return new JSONObject(jsonString);
     }
 
     private String getDocumentPath(String collection, String docId, JSONArray pathSegments) throws Exception {
